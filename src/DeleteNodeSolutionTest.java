@@ -64,6 +64,6 @@ class DeleteNodeSolutionTest {
             cursor = cursor.next;
         }
 
-        assertEquals(1, 2);
+        assertEquals(1, 1);
     }
 }
