@@ -3,7 +3,7 @@
 class DeleteNodeSolution {
     public void deleteNode(ListNode node) {
 
-        if(node.next == null){
+        if(node.next == null) {
             node = null;
             return;
         }

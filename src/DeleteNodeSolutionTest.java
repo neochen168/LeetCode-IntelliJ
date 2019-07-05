@@ -63,5 +63,7 @@ class DeleteNodeSolutionTest {
             System.out.println(cursor.val);
             cursor = cursor.next;
         }
+
+        assertEquals(1, 2);
     }
 }
