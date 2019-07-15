@@ -1,10 +1,5 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.lang.reflect.Array;
+import java.util.*;
 
 class Building {
     int left;
@@ -27,6 +22,17 @@ class Building {
                 return 0;
         }
     };
+
+    public static Comparator<Building> ascComparator = new Comparator<Building>() {
+        public int compare(Building b1, Building b2) {
+            if(b1.left > b2.left) return 1;
+            else if(b1.left < b2.left) return -1;
+            else if(b1.height > b2.height) return 1;
+            else if(b1.height < b2.height) return -1;
+            else return 0;
+        }
+
+    };
 }
 
 class BuildingComparator implements Comparator<Building> {
@@ -48,7 +54,86 @@ class ListComparator implements Comparator<List<Integer>> {
     }
 }
 
+class MaxHeapComparator implements Comparator<Integer> {
+    public int compare(Integer i1, Integer i2){
+        return Integer.compare(i2, i1);
+    }
+}
+
 public class SkyLineSolution {
+    public List<List<Integer>> getSkyline2(int[][] buildings) {
+        ArrayList<Building> sortedStart = new ArrayList<Building>();
+        ArrayList<Building> sortedEnd = new ArrayList<Building>();
+        for (int i = 0; i < buildings.length; i++) {
+            sortedStart.add(new Building(buildings[i][0], buildings[i][1], buildings[i][2]));
+            sortedEnd.add(new Building(buildings[i][0], buildings[i][1], buildings[i][2]));
+        }
+
+        Collections.sort(sortedStart, Building.ascComparator);
+        Collections.sort(sortedEnd, Building.bldComparator);
+
+        PriorityQueue<Building> maxHeap = new PriorityQueue<Building>(new BuildingComparator());
+        List<List<Integer>> ret = new ArrayList<List<Integer>>();
+        Building currentSky = new Building(Integer.MAX_VALUE, Integer.MIN_VALUE, 0);
+        for (int i = 0, j = 0; j < sortedEnd.size() || i < sortedStart.size();) {
+            Building rightMost = sortedEnd.get(j);
+            if(i < sortedStart.size() && sortedStart.get(i).left <= rightMost.right){
+                Building current = sortedStart.get(i);
+                maxHeap.add(current);
+                i++;
+                List<Integer> l = new ArrayList<Integer>();
+                l.add(current.left);
+                l.add(maxHeap.peek().height);
+                ret.add(l);
+            }else{
+                if(!maxHeap.isEmpty()) {
+                    if(maxHeap.peek().right >= currentSky.left && maxHeap.peek().right < currentSky.right){
+                        //System.out.println(String.format("currentSky %d %d", currentSky.left, currentSky.right));
+                        //System.out.println(String.format("maxHeap %d %d %d", maxHeap.peek().left, maxHeap.peek().right, maxHeap.peek().height));
+                        maxHeap.remove();
+                        j--;
+                    }else {
+                        Building pre = maxHeap.peek();
+                        maxHeap.remove();
+                        List<Integer> l = new ArrayList<Integer>();
+                        l.add(rightMost.right);
+                        l.add(maxHeap.isEmpty() ? 0 : maxHeap.peek().height);
+                        ret.add(l);
+                        currentSky.left = Math.min(pre.left, currentSky.left);
+                        currentSky.right = Math.max(rightMost.right, currentSky.right);
+                    }
+                }else{
+                    List<Integer> l = new ArrayList<Integer>();
+                    l.add(rightMost.right);
+                    l.add(0);
+                    currentSky = new Building(Integer.MAX_VALUE, Integer.MIN_VALUE, 0);
+                    ret.add(l);
+                }
+
+                j++;
+            }
+        }
+
+        Collections.sort(ret, new ListComparator());
+        for(int i = 1 ; i < ret.size(); i++){
+            if(Integer.compare(ret.get(i).get(1), ret.get(i-1).get(1)) == 0){
+                ret.remove(i);
+                i--;
+            }else if(ret.get(i).get(1) > ret.get(i-1).get(1) && Integer.compare(ret.get(i).get(0), ret.get(i-1).get(0)) == 0){
+                ret.remove(i-1);
+                i--;
+            }else if(Integer.compare(ret.get(i).get(1), ret.get(i-1).get(1))< 0 && Integer.compare(ret.get(i).get(0), ret.get(i-1).get(0)) == 0){
+                ret.remove(i-1);
+                i--;
+            }
+        }
+
+        for(int i = 0; i < ret.size(); i++){
+            //System.out.println(String.format("left %d, height %d", ret.get(i).get(0), ret.get(i).get(1)));
+        }
+        return ret;
+    }
+
     public List<List<Integer>> getSkyline(int[][] buildings) {
         ArrayList<Building> sortedStart = new ArrayList<Building>();
         ArrayList<Building> sortedEnd = new ArrayList<Building>();
@@ -57,87 +142,57 @@ public class SkyLineSolution {
             sortedEnd.add(new Building(buildings[i][0], buildings[i][1], buildings[i][2]));
         }
 
-        sortedStart.add(new Building(Integer.MAX_VALUE, Integer.MIN_VALUE, 0));
+        Collections.sort(sortedStart, Building.ascComparator);
         Collections.sort(sortedEnd, Building.bldComparator);
 
-
-        PriorityQueue<Building> maxHeap = new PriorityQueue<Building>(new BuildingComparator());
-        List<List<Integer>> ret = new ArrayList<List<Integer>>();
-
-        for (int i = 0, j = 0; j < sortedEnd.size() && i < sortedStart.size();) {
-            Building next = sortedStart.get(i);
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(new MaxHeapComparator());
+        ArrayList<List<Integer>> ret = new ArrayList<List<Integer>>();
+        for (int i = 0, j = 0; j < sortedEnd.size() || i < sortedStart.size();) {
             Building rightMost = sortedEnd.get(j);
-            if(next.left <= rightMost.right && next.left != Integer.MAX_VALUE){
-                maxHeap.add(next);
+            if(i < sortedStart.size() && sortedStart.get(i).left <= rightMost.right){
+                Building current = sortedStart.get(i);
+                maxHeap.add(current.height);
                 i++;
-                //System.out.println(String.format("The push ! %d, %d %d", next.left, next.right, next.height));
+                List<Integer> l = new ArrayList<Integer>();
+                l.add(current.left);
+                l.add(maxHeap.peek());
+                ret.add(l);
             }else{
-                Building latestSky = new Building(Integer.MAX_VALUE, Integer.MIN_VALUE,0);
-                while(rightMost.right <= next.left && !maxHeap.isEmpty()){
-                    List<Integer> l = new ArrayList<Integer>();
-                    Building top = maxHeap.peek();
-                    System.out.println(String.format("The Top ! %d, %d %d", top.left, top.right, top.height));
-                    System.out.println(String.format("The rightMost ! %d, %d %d", rightMost.left, rightMost.right, rightMost.height));
-                    if(top.right <= rightMost.right && top.right > latestSky.right){
-                                if(top.left < latestSky.left)
-                                    l.add(top.left);
-                                else
-                                    l.add(latestSky.right);
-                                l.add(top.height);
-                                ret.add(l);
-                                latestSky.left = latestSky.left < top.left ? latestSky.left : top.left;
-                                latestSky.right = latestSky.right > top.right ? latestSky.right : top.right;
-                                maxHeap.remove();
-                                if(!maxHeap.isEmpty()
-                                        && (
-                                                maxHeap.peek().left < latestSky.right
-                                                        && maxHeap.peek().left >= latestSky.left
-                                )) maxHeap.peek().left = latestSky.right;
-
-                    }else if(top.left < latestSky.left && top.right <= latestSky.right) {
-                        l.add(top.left);
-                        l.add(top.height);
-                        ret.add(l);
-                        latestSky.left = top.left;
-                        maxHeap.remove();
-                    }else if(top.left >= latestSky.left && top.right <= latestSky.right){
-                        maxHeap.remove();
-                    }
-                    else if(top.right > rightMost.right){
-                        rightMost = sortedEnd.get(++j);
-                    }
-
-                }
-
-                // add the 0 block
-                if(maxHeap.isEmpty()){
-                    if(next.left > latestSky.right || latestSky.right == Integer.MAX_VALUE){
+                if(!maxHeap.isEmpty()) {
+                        maxHeap.remove(rightMost.height);
                         List<Integer> l = new ArrayList<Integer>();
-                        l.add(latestSky.right);
-                        l.add(0);
+                        l.add(rightMost.right);
+                        l.add(maxHeap.isEmpty() ? 0 : maxHeap.peek());
                         ret.add(l);
-                    }
+                }else{
+                    List<Integer> l = new ArrayList<Integer>();
+                    l.add(rightMost.right);
+                    l.add(0);
+                    ret.add(l);
                 }
-                while(j < sortedEnd.size() && sortedEnd.get(j).right < next.left){
-                    j++;
-                }
-                maxHeap.add(next);
-                if(next.left == Integer.MAX_VALUE) break;
+
+                j++;
             }
         }
 
-
         Collections.sort(ret, new ListComparator());
         for(int i = 1 ; i < ret.size(); i++){
-            if(ret.get(i).get(1) == ret.get(i-1).get(1)){
+            if(Integer.compare(ret.get(i).get(1), ret.get(i-1).get(1)) == 0){
                 ret.remove(i);
+                i--;
+            }else if(ret.get(i).get(1) > ret.get(i-1).get(1) && Integer.compare(ret.get(i).get(0), ret.get(i-1).get(0)) == 0){
+                ret.remove(i-1);
+                i--;
+            }else if(Integer.compare(ret.get(i).get(1), ret.get(i-1).get(1))< 0 && Integer.compare(ret.get(i).get(0), ret.get(i-1).get(0)) == 0){
+                ret.remove(i-1);
                 i--;
             }
         }
 
         for(int i = 0; i < ret.size(); i++){
-            System.out.println(String.format("left %d, height %d", ret.get(i).get(0), ret.get(i).get(1)));
+            //System.out.println(String.format("left %d, height %d", ret.get(i).get(0), ret.get(i).get(1)));
         }
         return ret;
+
     }
 }
