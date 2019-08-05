@@ -1,4 +1,9 @@
+package com.leetcode.test;
+
+import com.leetcode.src.MergeBinaryTreeSolution;
+import com.leetcode.src.TreeNode;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,11 +29,11 @@ class MergeBinaryTreeSolutionTest {
         t2.right = new TreeNode(6);
         MergeBinaryTreeSolution sl = new MergeBinaryTreeSolution();
         TreeNode root = sl.mergeTrees(t1, t2);
-        assertEquals(root.val, 5);
+        Assertions.assertEquals(root.val, 5);
         System.out.println(root.val);
-        assertEquals(root.left.val, 7);
+        Assertions.assertEquals(root.left.val, 7);
         System.out.println(root.left.val);
-        assertEquals(root.right.val, 9);
+        Assertions.assertEquals(root.right.val, 9);
         System.out.println(root.right.val);
     }
 
@@ -41,11 +46,11 @@ class MergeBinaryTreeSolutionTest {
         t2.right = new TreeNode(6);
         MergeBinaryTreeSolution sl = new MergeBinaryTreeSolution();
         TreeNode root = sl.mergeTrees(t1, t2);
-        assertEquals(root.val, 5);
+        Assertions.assertEquals(root.val, 5);
         System.out.println(root.val);
-        assertEquals(root.left.val, 5);
+        Assertions.assertEquals(root.left.val, 5);
         System.out.println(root.left.val);
-        assertEquals(root.right.val, 9);
+        Assertions.assertEquals(root.right.val, 9);
         System.out.println(root.right.val);
     }
 }

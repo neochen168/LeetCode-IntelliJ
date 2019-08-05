@@ -1,6 +1,12 @@
+package com.leetcode.test;
+
+import com.leetcode.src.DeleteNodeSolution;
+import com.leetcode.src.ListNode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+
 
 import static org.junit.jupiter.api.Assertions.*;
 

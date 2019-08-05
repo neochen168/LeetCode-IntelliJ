@@ -1,9 +1,10 @@
-
+package com.leetcode.src;
 
 public class MaxDepthSolution {
 
     private int maxDepth2 = 1;
     private int maxDepth = 1;
+
     public int maxDepth(Node root) {
         if(root == null) return 0;
         findDepth2(root);

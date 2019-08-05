@@ -1,20 +1,14 @@
-import org.junit.jupiter.api.Test;
+package com.leetcode.test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.leetcode.src.SkyLineSolution;
+import com.leetcode.src.SkyLineSolution2;
+import org.junit.jupiter.api.Test;
 
 class SkyLineSolutionTest {
 
     @Test
     void getSkyline() {
         SkyLineSolution sl = new SkyLineSolution();
-
-        //sl.getSkyline2(new int[][] {
-        //    {2, 9, 10},
-        //    {3, 7, 15},
-        //    {5, 12, 12},
-        //    {15, 20, 10},
-        //        {19,24,8}
-        //});
 
         sl.getSkyline(new int[][] {
                 {1, 2, 1},
@@ -40,36 +34,50 @@ class SkyLineSolutionTest {
         });
 
 
-
-        //sl.getSkyline2(new int[][] {
-        //        {0, 2147483647, 2147483647}
-        //});
-
         sl.getSkyline(new int[][] {
                 {0, 2147483647, 2147483647}
         });
 
-        //sl.getSkyline2(new int[][] {
-        //        {2, 4, 70},
-        //        {3, 8, 30},
-        //        {6, 100, 41}
-        //});
         sl.getSkyline(new int[][] {
                 {2, 4, 70},
                 {3, 8, 30},
                 {6, 100, 41}
         });
 
-        //sl.getSkyline2(new int[][] {
-        //        {2, 13, 10},
-        //        {10, 17, 25},
-        //        {12, 20, 14}
-        //});
+        sl.getSkyline(new int[][] {
+                {2, 13, 10},
+                {10, 17, 25},
+                {12, 20, 14}
+        });
+    }
+
+    @Test
+    void smokeTestForSkyline2Solution(){
+        SkyLineSolution2 sl = new SkyLineSolution2();
+
+        sl.getSkyline(new int[][] {
+            {2, 9, 10},
+            {3, 7, 15},
+            {5, 12, 12},
+            {15, 20, 10},
+                {19,24,8}
+        });
 
         sl.getSkyline(new int[][] {
                 {2, 13, 10},
                 {10, 17, 25},
                 {12, 20, 14}
+        });
+
+
+        sl.getSkyline(new int[][] {
+                {0, 2147483647, 2147483647}
+        });
+
+        sl.getSkyline(new int[][] {
+                {2, 4, 70},
+                {3, 8, 30},
+                {6, 100, 41}
         });
     }
 }
