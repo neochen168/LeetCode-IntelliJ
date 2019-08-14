@@ -106,5 +106,6 @@ public class MergeIntervalSolution {
             else if (l1[0] > l2[0]) return 1;
             else return 0;
         }
+
     }
 }
