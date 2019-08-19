@@ -3,8 +3,6 @@ package com.leetcode.src;
 import java.util.List;
 
 public class HighestIntervalSolution {
-
-
     /// <summary>
     /// Given a set of entries, each containing a time index and a int count value,
     //class Entry
@@ -67,26 +65,4 @@ public class HighestIntervalSolution {
 
         return list.get(retIndex).time;
     }
-
-    /// <summary>
-    //100, 2
-    //100, 1
-    //110, 10
-    //200, 4
-    //1000, 3
-    //1200, 8
-    /// </summary>
-/*    public static void Test()
-    {
-        List<Entry> list = new List<Entry>();
-        list.Add(new Entry(100, 2));
-        list.Add(new Entry(100, 1));
-        list.Add(new Entry(110, 10));
-        list.Add(new Entry(200, 400));
-        list.Add(new Entry(1000, 3));
-        list.Add(new Entry(1200, 80));
-
-        Console.WriteLine(GetHighestInterval(list, 50));
-    }*/
-
 }
