@@ -12,7 +12,6 @@ public class LargetstRetangleAreaSolution {
         if (n == 0) return 0;
 
         int maxRec = 0;
-
         int pIndex = 0;
         Stack<Integer> stack  = new Stack<Integer>();
         Stack<Integer> hStack = new Stack<Integer>();
@@ -25,14 +24,11 @@ public class LargetstRetangleAreaSolution {
             if(heights[pIndex] > hStack.peek()){
                 stack.push(pIndex);
                 hStack.push(heights[pIndex]);
-                maxRec = Math.max(maxRec, heights[pIndex]);
             }else{
                 int leftMin= stack.peek();
                 while(!stack.empty() && hStack.peek() > heights[pIndex]){
                     leftMin = stack.peek();
-                    int height = hStack.peek();
-                    maxRec = Math.max(height * (pIndex - leftMin), maxRec);
-
+                    maxRec = Math.max(hStack.peek() * (pIndex - leftMin), maxRec);
                     stack.pop();
                     hStack.pop();
                 }
@@ -52,8 +48,4 @@ public class LargetstRetangleAreaSolution {
 
         return maxRec;
     }
-
-
-
-
 }
