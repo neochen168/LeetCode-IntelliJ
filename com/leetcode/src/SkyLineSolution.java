@@ -95,11 +95,7 @@ public class SkyLineSolution {
             }
         }
 
-        for(int i = 0; i < ret.size(); i++){
-            //System.out.println(String.format("left %d, height %d", ret.get(i).get(0), ret.get(i).get(1)));
-        }
         return ret;
-
     }
 
 
@@ -131,8 +127,6 @@ public class SkyLineSolution {
             }else{
                 if(!maxHeap.isEmpty()) {
                     if(maxHeap.peek().right >= currentSky.left && maxHeap.peek().right < currentSky.right){
-                        //System.out.println(String.format("currentSky %d %d", currentSky.left, currentSky.right));
-                        //System.out.println(String.format("maxHeap %d %d %d", maxHeap.peek().left, maxHeap.peek().right, maxHeap.peek().height));
                         maxHeap.remove();
                         j--;
                     }else {
@@ -171,9 +165,6 @@ public class SkyLineSolution {
             }
         }
 
-        for(int i = 0; i < ret.size(); i++){
-            //System.out.println(String.format("left %d, height %d", ret.get(i).get(0), ret.get(i).get(1)));
-        }
         return ret;
     }
 }
