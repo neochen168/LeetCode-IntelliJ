@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class Solution {
+public class SimpleSolution {
     public int[] twoSum(int[] nums, int target){
         HashMap<Integer, Integer> dic = new HashMap();
 

@@ -1,5 +1,7 @@
 package com.leetcode.src;
 
+import java.util.HashSet;
+
 public class ListDetectCycleSolution {
 
     public ListNode DetectCycle(ListNode head)
@@ -39,5 +41,19 @@ public class ListDetectCycleSolution {
         }
 
         return null;
+    }
+
+    public ListNode DetectCycle2(ListNode head){
+        ListNode p = head;
+        if(p == null) return p;
+
+        HashSet<ListNode> visited = new HashSet<ListNode>();
+        visited.add(p);
+        while(p != null && !visited.contains(p.next)){
+            p = p.next;
+            visited.add(p);
+        }
+
+        return p == null ? null : p.next;
     }
 }
