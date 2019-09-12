@@ -10,6 +10,43 @@ public class ValidSubArraySolution {
         }
     }
 
+    public int validSubArraysDP(int[] nums){
+        int n = nums.length;
+        if (n == 0) return 0;
+
+        int ret = 1;
+        int[] dp = new int[n];
+        int[] dpIndex = new int[n];
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+            dpIndex[i] = i;
+        }
+
+        ret = 1;
+
+        for (int i = 1; i < n; i++) {
+            if (nums[i] >= nums[i - 1]) {
+                dpIndex[i] = dpIndex[i - 1];
+                dp[i] += dp[i-1];
+
+            } else if (nums[i] >= nums[dpIndex[i - 1]]) {
+                dpIndex[i] = dpIndex[i - 1];
+                dp[i]++;
+                for(int j = i-1; j > dpIndex[i-1]; j--){
+                    if(nums[j] <= nums[i]){
+                        dp[i] += dp[j] - 1; //minus the nums[j] itself
+                        break;
+                    }
+                }
+            }
+
+            ret += dp[i];
+        }
+
+        return ret;
+    }
+
+
     public int validSubarrays(int[] nums) {
         int left = 0;
         int right = 0;
