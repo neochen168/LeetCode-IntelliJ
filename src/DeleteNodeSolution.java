@@ -1,4 +1,4 @@
-
+import com.leetcode.src.ListNode;
 
 class DeleteNodeSolution {
     public void deleteNode(ListNode node) {
